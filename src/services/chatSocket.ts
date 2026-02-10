@@ -1,12 +1,7 @@
 import { io, type Socket } from 'socket.io-client';
 
 import type { ConversationNewEvent, MessageNewEvent } from '@root/types/chat';
-
-type AgentAuth = {
-  agentId: string;
-  agentName: string;
-  token?: string;
-};
+import { getAuthTokens } from '@root/utils/tokenStorage';
 
 type ServerToClientEvents = {
   'conversation:new': (payload: ConversationNewEvent) => void;
@@ -14,7 +9,7 @@ type ServerToClientEvents = {
 };
 
 type ClientToServerEvents = {
-  'agent:online': (payload: { agentId: string; agentName: string }) => void;
+  'agent:online': () => void;
   'agent:join': (payload: { conversationId: string }) => void;
   'agent:message': (payload: { conversationId: string; message: string }) => void;
 };
@@ -24,19 +19,20 @@ export type ChatSocket = Socket<ServerToClientEvents, ClientToServerEvents>;
 let socketSingleton: ChatSocket | null = null;
 
 const getSocketUrl = () => {
-  return process.env.NEXT_PUBLIC_SOCKET_URL || process.env.NEXT_PUBLIC_API_URL || '';
+  return process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3001';
 };
 
-export const getChatSocket = (auth: AgentAuth): ChatSocket => {
+export const getChatSocket = (): ChatSocket => {
   if (socketSingleton && socketSingleton.connected) return socketSingleton;
+
+  const tokens = getAuthTokens();
+  const accessToken = tokens?.accessToken;
 
   socketSingleton = io(getSocketUrl(), {
     transports: ['websocket'],
     autoConnect: true,
     auth: {
-      agentId: auth.agentId,
-      agentName: auth.agentName,
-      token: auth.token,
+      accessToken: accessToken,
     },
   });
 

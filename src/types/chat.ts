@@ -13,20 +13,15 @@ export type Conversation = {
 export type MessageSenderType = 'CUSTOMER' | 'AGENT';
 
 export type Message = {
-  id?: string;
+  id?: string | number;
   conversationId: string;
   senderType: MessageSenderType;
-  senderAgentId?: string | null;
+  senderAgentId?: string | number | null;
   senderName?: string | null;
   text: string;
   createdAt: string;
 };
 
-export type ConversationNewEvent = {
-  conversation: Conversation;
-  lastMessage?: Message;
-};
-
-export type MessageNewEvent = {
-  message: Message;
-};
+// Socket payloads đã chuẩn hóa: UNWRAPPED
+export type ConversationNewEvent = Conversation;
+export type MessageNewEvent = Message;

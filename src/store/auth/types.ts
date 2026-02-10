@@ -23,8 +23,8 @@ export interface AuthResponse {
   refreshToken: string;
   user?: {
     id: number;
-    email: string;
-    name?: string;
+    email?: string;
+    username?: string;
   };
 }
 
@@ -42,7 +42,7 @@ export interface AuthState {
   refreshToken: string | null;
   user: {
     id: number;
-    email: string;
-    name?: string;
+    email?: string;
+    username?: string;
   } | null;
 }

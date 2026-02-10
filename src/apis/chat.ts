@@ -10,7 +10,7 @@ export type GetConversationsParams = {
 };
 
 export type GetConversationsResponse = {
-  data: Conversation[];
+  items: Conversation[];
   nextCursor?: string | null;
 };
 
@@ -20,7 +20,7 @@ export type GetMessagesParams = {
 };
 
 export type GetMessagesResponse = {
-  data: Message[];
+  items: Message[];
   nextBefore?: string | null;
 };
 

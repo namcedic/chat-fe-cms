@@ -1,5 +1,5 @@
 import { AntdRegistry } from '@ant-design/nextjs-registry';
-import { ConfigProvider } from 'antd';
+import { App, ConfigProvider } from 'antd';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import React from 'react';
@@ -33,12 +33,14 @@ export default function RootLayout({
               },
             }}
           >
-            <ReduxProvider>
-              <ReactQueryProvider>
-                {children}
-                <Toaster />
-              </ReactQueryProvider>
-            </ReduxProvider>
+            <App>
+              <ReduxProvider>
+                <ReactQueryProvider>
+                  {children}
+                  <Toaster />
+                </ReactQueryProvider>
+              </ReduxProvider>
+            </App>
           </ConfigProvider>
         </AntdRegistry>
       </body>
